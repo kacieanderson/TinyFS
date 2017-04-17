@@ -150,10 +150,12 @@ public class Master {
 							dos.flush();
 							break;
 						case OpenFileCMD:
-							//TODO
+							dos.writeInt(OpenFile(din.readUTF()));
+							dos.flush();
 							break;
 						case CloseFileCMD:
-							//TODO
+							dos.writeInt(CloseFile(din.readUTF()));
+							dos.flush();
 							break;
 						case CreateChunkCMD:
 							dos.writeUTF(createChunk(din.readUTF()));
