@@ -135,7 +135,19 @@ public class ClientFS extends Client{
 	 * Example usage: Createfile("/Shahram/CSCI485/Lecture1/", "Intro.pptx")
 	 */
 	public FSReturnVals CreateFile(String tgtdir, String filename) {
-		return null;
+		
+		try {
+			masterDos.writeInt(Master.CreateFileCMD);
+			masterDos.writeUTF(tgtdir);
+			masterDos.writeUTF(filename);
+			masterDos.flush();
+			return FSReturnVals.values()[masterDin.readInt()];
+		} catch (IOException e) {
+			System.out.println("CreateDir failed, IO Exception");
+			e.printStackTrace();
+		}
+		
+		return FSReturnVals.Fail;
 	}
 
 	/**
@@ -147,7 +159,19 @@ public class ClientFS extends Client{
 	 * Example usage: DeleteFile("/Shahram/CSCI485/Lecture1/", "Intro.pptx")
 	 */
 	public FSReturnVals DeleteFile(String tgtdir, String filename) {
-		return null;
+		
+		try {
+			masterDos.writeInt(Master.DeleteFileCMD);
+			masterDos.writeUTF(tgtdir);
+			masterDos.writeUTF(filename);
+			masterDos.flush();
+			return FSReturnVals.values()[masterDin.readInt()];
+		} catch (IOException e) {
+			System.out.println("DeleteFile failed, IO Exception");
+			e.printStackTrace();
+		}
+		return FSReturnVals.Fail;
+		
 	}
 
 	/**
@@ -158,7 +182,20 @@ public class ClientFS extends Client{
 	 * Example usage: OpenFile("/Shahram/CSCI485/Lecture1/Intro.pptx", FH1)
 	 */
 	public FSReturnVals OpenFile(String FilePath, FileHandle ofh) {
-		return null;
+		
+		// ofh.setFilePath(FilePath);
+		
+		try {
+			masterDos.writeInt(Master.OpenFileCMD);
+			masterDos.writeUTF(FilePath);
+			masterDos.flush();
+			return FSReturnVals.values()[masterDin.readInt()];
+		} catch (IOException e) {
+			System.out.println("OpenFile failed, IO Exception");
+			e.printStackTrace();
+		}
+		
+		return FSReturnVals.Fail;
 	}
 
 	/**
@@ -169,7 +206,18 @@ public class ClientFS extends Client{
 	 * Example usage: CloseFile(FH1)
 	 */
 	public FSReturnVals CloseFile(FileHandle ofh) {
-		return null;
+		try {
+			masterDos.writeInt(Master.CloseFileCMD);
+			String temp = ofh.toString();
+			masterDos.writeUTF(temp);
+			masterDos.flush();
+			return FSReturnVals.values()[masterDin.readInt()];
+		} catch (IOException e) {
+			System.out.println("CloseFile failed, IO Exception");
+			e.printStackTrace();
+		}
+		
+		return FSReturnVals.BadHandle;
 	}
 
 }
